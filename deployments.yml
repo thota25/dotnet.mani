@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: myapp-deployment
-          image: d1464108bc764740b25896e992f62a26/dotnetmani-app:latest
+          image: Azure Container Registry/dotnetmani-app:latest
           ports:
             - containerPort: 8080
