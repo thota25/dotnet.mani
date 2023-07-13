@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: my-awesome-app-pod
-  namespace: awesomeapps
+  name: dotnetmani-app-deployment
+  namespace: mani
 spec:
   containers:
-    - name: main-app-container
-      image: myregistry.azurecr.io/my-awesome-app:v1
+    - name: 
+      image: manish1212.azurecr.io/dotnetmani-app-deployment:v1
       imagePullPolicy: IfNotPresent
   imagePullSecrets:
-    - name: acr-secret
+    - name: manish22
