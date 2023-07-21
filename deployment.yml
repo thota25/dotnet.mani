@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dotnetmani-app-deployment
+  namespace: manish
+  labels:
+    app: dotnetmani-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dotnetmani-app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  template:
+    metadata:
+      labels:
+        app: dotnetmani-app
+    spec:
+      initContainers:
+      - name: init-setup
+        image: busybox:latest
+        command: ['sh', '-c', 'ls; pwd; sleep 10']
+        envFrom:
+        - configMapRef:
+            name: dotnetmani-app-deployment
+      containers:
+      - name: dotnetmani-app
+        image: manish1212.azurecr.io/dotnetmani-app:latest
+        ports:
+        - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /_status/healthz
+            port: 5000   # Corrected port to match the containerPort
+          initialDelaySeconds: 8
+          periodSeconds: 10
+          failureThreshold: 3  # Corrected field name
+          successThreshold: 1  # Corrected field name
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 5000   # Corrected port to match the containerPort
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        env:
+        - name: dotnetmani-app-deployment
+          valueFrom:
+            configMapKeyRef:
+              key: DB_HOST
+              name: dotnetmani-app-deployment
