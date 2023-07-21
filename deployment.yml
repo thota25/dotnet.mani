@@ -30,6 +30,7 @@ spec:
       containers:
       - name: dotnetmani-app
         image: manish1212.azurecr.io/dotnetmani-app:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         livenessProbe:
