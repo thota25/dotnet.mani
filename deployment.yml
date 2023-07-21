@@ -24,13 +24,12 @@ spec:
       - name: init-setup
         image: busybox:latest
         command: ['sh', '-c', 'ls; pwd; sleep 10']
-        envFrom:
+        env:
         - configMapRef:
             name: dotnetmani-app-deployment
       containers:
       - name: dotnetmani-app
         image: manish1212.azurecr.io/dotnetmani-app:latest
-        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         livenessProbe:
