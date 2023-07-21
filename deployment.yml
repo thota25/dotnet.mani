@@ -30,6 +30,10 @@ spec:
       containers:
       - name: dotnetmani-app
         image: manish1212.azurecr.io/dotnetmani-app:latest
+        imagePullPolicy: Always
+        envFrom:
+        - secretRef:
+             name: manish25
         ports:
         - containerPort: 5000
         livenessProbe:
