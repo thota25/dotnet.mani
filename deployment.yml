@@ -20,35 +20,37 @@ spec:
       labels:
         app: dotnetmani-app
     spec:
-      initContainers:
-      - name: init-setup
-        image: busybox:latest
-        command: ['sh', '-c', 'ls; pwd; sleep 10']
-        envFrom:
-        - configMapRef:
-            name: dotnetmani-app-deployment
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: envi
+                    operator: In
+                    values:
+                      - prob
       containers:
-      - name: dotnetmani-app
-        image: manishthota25/mani:latest
-        ports:
-        - containerPort: 5000
-        livenessProbe:
-          httpGet:
-            path: /_status/healthz
-            port: 5000   # Corrected port to match the containerPort
-          initialDelaySeconds: 8
-          periodSeconds: 10
-          failureThreshold: 3  # Corrected field name
-          successThreshold: 1  # Corrected field name
-        readinessProbe:
-          httpGet:
-            path: /readiness
-            port: 5000   # Corrected port to match the containerPort
-          initialDelaySeconds: 15
-          periodSeconds: 5
-        env:
-        - name: dotnetmani-app-deployment
-          valueFrom:
-            configMapKeyRef:
-              key: DB_HOST
-              name: dotnetmani-app-deployment
+        - name: dotnetmani-app
+          image: manish1212.azurecr.io/dotnetmani-app:latest
+          ports:
+            - containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /_status/healthz
+              port: 5000
+            initialDelaySeconds: 8
+            periodSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: dotnetmani-app-deployment
+                  key: DB_HOST
