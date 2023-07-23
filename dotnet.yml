@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: dotnetmani-app-container
-        image: your-dotnet-image:latest
+        image: dotnetmani-app:latest
         ports:
         - containerPort: 80
       # Add other container configurations like resources, env, etc.
