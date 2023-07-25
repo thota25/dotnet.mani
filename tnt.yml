@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ManiTNT
+spec:
+  containers:
+  - name: dotnetmani-app
+    image: manishthota25/mani:latest
+  tolerations:
+  - key: specialnode
+    operator: "Equal"
+    value: "true"
+    effect: "NoSchedule"
