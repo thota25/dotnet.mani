@@ -1,60 +1,13 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
-  name: dotnetmani-app-deployment
-  namespace: manish
-  labels:
-    app: dotnetmani-app
+  name: my-pod
 spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: dotnetmani-app
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 25%
-      maxSurge: 25%
-  template:
-    metadata:
-      labels:
-        app: dotnetmani-app
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: env
-                    operator: In
-                    values:
-                      - prob
-      containers:
-        - name: dotnetmani-app
-          image: manishthota25/mani:latest
-          ports:
-            - containerPort: 5000
-          livenessProbe:
-            httpGet:
-              path: /_status/healthz
-              port: 5000
-            initialDelaySeconds: 8
-            periodSeconds: 10
-            failureThreshold: 3
-            successThreshold: 1
-          readinessProbe:
-            httpGet:
-              path: /readiness
-              port: 5000
-            initialDelaySeconds: 15
-            periodSeconds: 5
-          env:
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: dotnetmani-app-deployment
-                  key: DB_HOST
-      tolerations:  
-        - key: "special"
-          operator: "Exists"
-          effect: "NoSchedule"
+  containers:
+  - name: dotnetmani-app
+    image: manishthota25/mani:latest
+  tolerations:
+  - key: project
+    operator: Exists  # Change to "Exists"
+    # Remove the "value" field, as it is not required for the "Exists" operator
+    effect: NoSchedule
