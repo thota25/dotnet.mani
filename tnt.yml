@@ -7,7 +7,7 @@ spec:
   - name: dotnetmani-app
     image: manishthota25/mani:latest
   tolerations:
-  - key: specialnode
-    operator: "Equal"
+  - key: project
+    operator: "Exists"
     value: "true"
     effect: "NoSchedule"
