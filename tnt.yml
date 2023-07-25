@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: dotnetmani-app
-    image: manishthota25:latest
+    image: manishthota25/mani:latest
   tolerations:
   - key: project
     operator: Exists  # Change to "Exists"
