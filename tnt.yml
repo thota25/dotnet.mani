@@ -31,7 +31,7 @@ spec:
                       - prob
       containers:
         - name: dotnetmani-app
-          image: manishthota25/mani:latest:latest
+          image: manishthota25/mani:latest
           ports:
             - containerPort: 5000
           livenessProbe:
