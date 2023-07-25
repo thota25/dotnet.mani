@@ -54,3 +54,7 @@ spec:
                 configMapKeyRef:
                   name: dotnetmani-app-deployment
                   key: DB_HOST
+      tolerations:  
+        - key: "specialnode"
+          operator: "Exists"
+          effect: "NoSchedule"
