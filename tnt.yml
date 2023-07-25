@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dotnetmani-app-deployment
-  namespace: nv1
+  namespace: manish
   labels:
     app: dotnetmani-app
 spec:
