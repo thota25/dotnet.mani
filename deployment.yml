@@ -53,8 +53,3 @@ spec:
             configMapKeyRef:
               key: DB_HOST
               name: dotnetmani-app-deployment
-      tolerations:
-      - key: project
-        operator: "Exists"  # Change to "Exists"
-        value: "true"
-        effect: "NoSchedule" # Remove the "value" field, as it is not required for the "Exists" operator
