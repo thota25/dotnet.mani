@@ -5,9 +5,9 @@ metadata:
 spec:
   containers:
   - name: dotnetmani-app
-    image: manishthota25/mani:latest
+    image: manishthota25:latest
   tolerations:
   - key: project
-    operator: "Exists"
-    value: "true"
-    effect: "NoSchedule"
+    operator: Exists  # Change to "Exists"
+    # Remove the "value" field, as it is not required for the "Exists" operator
+    effect: NoSchedule
