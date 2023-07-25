@@ -1,8 +1,9 @@
+# Deployement 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dotnetmani-app-deployment
-  namespace: manish
+  namespace: nv1
   labels:
     app: dotnetmani-app
 spec:
@@ -20,37 +21,35 @@ spec:
       labels:
         app: dotnetmani-app
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: envi
-                    operator: In
-                    values:
-                      - prob
+      initContainers:
+      - name: init-setup
+        image: busybox:latest
+        command: ['sh', '-c', 'ls; pwd; sleep 10']
+        envFrom:
+        - configMapRef:
+            name: dotnetmani-app-deployment
       containers:
-        - name: dotnetmani-app
-          image: manishthota25/mani:latest
-          ports:
-            - containerPort: 5000
-          livenessProbe:
-            httpGet:
-              path: /_status/healthz
-              port: 5000
-            initialDelaySeconds: 8
-            periodSeconds: 10
-            failureThreshold: 3
-            successThreshold: 1
-          readinessProbe:
-            httpGet:
-              path: /readiness
-              port: 5000
-            initialDelaySeconds: 15
-            periodSeconds: 5
-          env:
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: dotnetmani-app-deployment
-                  key: DB_HOST
+      - name: dotnetmani-app
+        image: manishthota25/mani:latest
+        ports:
+        - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /_status/healthz
+            port: 5000   # Corrected port to match the containerPort
+          initialDelaySeconds: 8
+          periodSeconds: 10
+          failureThreshold: 3  # Corrected field name
+          successThreshold: 1  # Corrected field name
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 5000   # Corrected port to match the containerPort
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        env:
+        - name: dotnetmani-app-deployment
+          valueFrom:
+            configMapKeyRef:
+              key: DB_HOST
+              name: dotnetmani-app-deployment
