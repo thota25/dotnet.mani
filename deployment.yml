@@ -25,10 +25,19 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                  - key: env
+                  - key: environment
                     operator: In
                     values:
-                      - prob
+                      - production
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - dotnetmani-app
+              topologyKey: "kubernetes.io/hostname"
       containers:
         - name: dotnetmani-app
           image: manishthota25/mani:latest
@@ -49,12 +58,9 @@ spec:
             initialDelaySeconds: 15
             periodSeconds: 5
           env:
-            - name: dotnetmani-app-deployment
+            - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
                   name: dotnetmani-app-deployment
                   key: DB_HOST
-      tolerations:  
-        - key: "specialnode"
-          operator: "Exists"
-          effect: "NoSchedule"
+     
