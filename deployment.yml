@@ -63,4 +63,3 @@ spec:
                 configMapKeyRef:
                   name: dotnetmani-app-deployment
                   key: DB_HOST
-     
