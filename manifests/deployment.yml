@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: dotnetmaniapp 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dotnetmaniapp
+  template:
+    metadata:
+      labels:
+        app: dotnetmaniapp 
+    spec:
+      containers:
+        - name: dotnetmaniapp 
+          image: manish1212.azurecr.io/dotnetmaniapp
+          ports:
+          - containerPort: 5000
